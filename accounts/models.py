@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from .managers import UserManager
 
 
 ROLE_RECTOR = "RECTOR"
@@ -40,6 +41,7 @@ class BaseModel(models.Model):
 
 class User(AbstractUser, BaseModel):
     username = None
+    objects = UserManager()
 
     full_name = models.CharField(
         max_length=255,
@@ -54,6 +56,7 @@ class User(AbstractUser, BaseModel):
 
     email = models.EmailField(
         unique=True,
+        blank=False,
         verbose_name="Email"
     )
 
@@ -61,22 +64,29 @@ class User(AbstractUser, BaseModel):
         max_length=30,
         choices=ROLE_CHOICES,
         default=ROLE_TEACHER,
-        verbose_name="Lavozim"
+        verbose_name="Lavozim",
+        blank=True,
+        null=True,
     )
 
     salary = models.DecimalField(
         max_digits=12,
         decimal_places=2,
-        verbose_name="Maosh"
+        verbose_name="Maosh",
+        null=True,
+        blank=True
     )
 
     hire_date = models.DateField(
-        verbose_name="Ishga qabul qilingan sana"
+        verbose_name="Ishga qabul qilingan sana",
+        null=True,
+        blank=True,
     )
 
     USERNAME_FIELD = "email"
 
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["full_name", 'phone']
+    
 
     def __str__(self):
         return self.full_name
