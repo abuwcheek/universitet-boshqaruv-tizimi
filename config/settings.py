@@ -34,6 +34,9 @@ INSTALLED_APPS = [
     
     # my apps
     'accounts',
+    'faculties',
+    'departments',
+    'tasks',
 
 ]
 

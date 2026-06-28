@@ -83,6 +83,20 @@ class User(AbstractUser, BaseModel):
         blank=True,
     )
 
+    faculty = models.ForeignKey(
+    "faculties.Faculty",
+    on_delete=models.SET_NULL,
+    null=True,
+    blank=True
+    )
+
+    department = models.ForeignKey(
+        "departments.Department",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
     USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ["full_name", 'phone']

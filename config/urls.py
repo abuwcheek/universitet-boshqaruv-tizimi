@@ -11,6 +11,12 @@ urlpatterns = [
 
     path('accounts/', include('accounts.urls')),
 
+    path('faculties/', include('faculties.urls')),
+
+    path('departments/', include('departments.urls')),
+
+    path('tasks/', include('tasks.urls')),
+
     path(
         'api/token/',
         TokenObtainPairView.as_view(),
