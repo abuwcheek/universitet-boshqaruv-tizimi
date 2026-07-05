@@ -6,6 +6,7 @@ from .models import User
 class UserAdmin(admin.ModelAdmin):
     list_display = (
         "id",
+        "login",
         "full_name",
         "email",
         "phone",
@@ -18,6 +19,7 @@ class UserAdmin(admin.ModelAdmin):
 
     list_display_links = (
         "id",
+        "login",
         "full_name",
         "email",
     )
@@ -35,6 +37,7 @@ class UserAdmin(admin.ModelAdmin):
 
     search_fields = (
         "full_name",
+        "login",
         "email",
         "phone",
     )

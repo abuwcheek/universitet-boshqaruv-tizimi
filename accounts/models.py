@@ -3,6 +3,7 @@ from django.db import models
 from .managers import UserManager
 
 
+ROLE_ADMIN = "ADMIN"
 ROLE_RECTOR = "RECTOR"
 ROLE_VICE_RECTOR = "VICE_RECTOR"
 ROLE_DEAN = "DEAN"
@@ -15,6 +16,7 @@ ROLE_CHOICES = (
     (ROLE_DEAN, "Dekan"),
     (ROLE_HEAD_OF_DEPARTMENT, "Kafedra mudiri"),
     (ROLE_TEACHER, "O'qituvchi"),
+    (ROLE_ADMIN, "Admin"),
 )
 
 
@@ -43,6 +45,11 @@ class User(AbstractUser, BaseModel):
     username = None
     objects = UserManager()
 
+    login = models.CharField(
+        unique=True,
+        max_length=100
+    )
+
     full_name = models.CharField(
         max_length=255,
         verbose_name="F.I.O."
@@ -55,15 +62,15 @@ class User(AbstractUser, BaseModel):
     )
 
     email = models.EmailField(
-        unique=True,
-        blank=False,
+        blank=True,
+        null=True,
         verbose_name="Email"
     )
 
     position = models.CharField(
         max_length=30,
         choices=ROLE_CHOICES,
-        default=ROLE_TEACHER,
+        default=ROLE_ADMIN,
         verbose_name="Lavozim",
         blank=True,
         null=True,
@@ -97,7 +104,7 @@ class User(AbstractUser, BaseModel):
         blank=True
     )
 
-    USERNAME_FIELD = "email"
+    USERNAME_FIELD = "login"
 
     REQUIRED_FIELDS = ["full_name", 'phone']
     

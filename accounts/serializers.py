@@ -12,6 +12,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
+            "login",
             "full_name",
             "phone",
             "email",
@@ -29,3 +30,47 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+
+
+
+from rest_framework_simplejwt.serializers import (
+    TokenObtainPairSerializer
+)
+from django.utils import timezone
+
+
+class LoginSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        return super().get_token(user)
+
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        user = self.user
+
+        return {
+            "message": "Login muvaffaqiyatli amalga oshirildi",
+
+            "user": {
+                "id": user.id,
+                "login": user.login,
+                "role": user.position,
+            },
+
+            "tokens": {
+                "access": data["access"],
+                "refresh": data["refresh"],
+            },
+
+            "faculty": user.faculty.name if user.faculty else None,
+            "department": user.department.name if user.department else None,
+            "is_active": user.is_active,
+            "is_staff": user.is_staff,
+            "is_superuser": user.is_superuser,
+
+            "login_at": timezone.now(),
+        }
